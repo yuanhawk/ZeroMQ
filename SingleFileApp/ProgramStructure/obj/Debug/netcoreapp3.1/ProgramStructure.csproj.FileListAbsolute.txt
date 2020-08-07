@@ -1,0 +1,13 @@
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\bin\Debug\netcoreapp3.1\ProgramStructure.exe
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\bin\Debug\netcoreapp3.1\ProgramStructure.deps.json
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\bin\Debug\netcoreapp3.1\ProgramStructure.runtimeconfig.json
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\bin\Debug\netcoreapp3.1\ProgramStructure.runtimeconfig.dev.json
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\bin\Debug\netcoreapp3.1\ProgramStructure.dll
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\bin\Debug\netcoreapp3.1\ProgramStructure.pdb
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\obj\Debug\netcoreapp3.1\ProgramStructure.csprojAssemblyReference.cache
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\obj\Debug\netcoreapp3.1\ProgramStructure.AssemblyInfoInputs.cache
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\obj\Debug\netcoreapp3.1\ProgramStructure.AssemblyInfo.cs
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\obj\Debug\netcoreapp3.1\ProgramStructure.csproj.CoreCompileInputs.cache
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\obj\Debug\netcoreapp3.1\ProgramStructure.dll
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\obj\Debug\netcoreapp3.1\ProgramStructure.pdb
+C:\Users\yuanm\RiderProjects\SingleFileApp\ProgramStructure\obj\Debug\netcoreapp3.1\ProgramStructure.genruntimeconfig.cache

@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ChatZ.Client.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="HostAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">tcp://localhost</Value>
+    </Setting>
+    <Setting Name="PublishPort" Type="System.UInt16" Scope="Application">
+      <Value Profile="(Default)">2201</Value>
+    </Setting>
+    <Setting Name="ControlPort" Type="System.UInt16" Scope="Application">
+      <Value Profile="(Default)">2203</Value>
+    </Setting>
+    <Setting Name="IdleMilliseconds" Type="System.UInt64" Scope="Application">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

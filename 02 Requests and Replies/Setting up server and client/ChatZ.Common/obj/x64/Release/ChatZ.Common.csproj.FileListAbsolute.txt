@@ -1,0 +1,11 @@
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\bin\x64\Release\chatz.common.dll
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\bin\x64\Release\chatz.common.pdb
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\bin\x64\Release\chatz.common.xml
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\bin\x64\Release\Newtonsoft.Json.dll
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\bin\x64\Release\System.ValueTuple.dll
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\bin\x64\Release\Newtonsoft.Json.xml
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\obj\x64\Release\ChatZ.Common.csprojAssemblyReference.cache
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\obj\x64\Release\ChatZ.Common.csproj.CoreCompileInputs.cache
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\obj\x64\Release\ChatZ.Common.csproj.CopyComplete
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\obj\x64\Release\chatz.common.dll
+C:\Users\yuanm\Downloads\Ex_Files_zeroMQ\Ex_Files_zeroMQ\Exercise Files\02_03\Begin\ChatZ.Common\obj\x64\Release\chatz.common.pdb

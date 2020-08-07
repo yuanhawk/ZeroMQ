@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>chatz.common</name>
+    </assembly>
+    <members>
+        <member name="T:ChatZ.Common.ClientMessage">
+            <summary>
+            Encodes all the possible variants of a request the server might receiver from a client
+            <para>(Note: instances shoulde be created via the class-level <see cref="M:ChatZ.Common.ClientMessage.Decode(System.Byte[][])"/> method.)</para>
+            </summary>
+        </member>
+        <member name="M:ChatZ.Common.ClientMessage.Match``1(System.Func{ChatZ.Common.ClientMessage.Here,``0},System.Func{ChatZ.Common.ClientMessage.Talk,``0},System.Func{``0})">
+            <summary>
+            Executes the appropriate callback based on the variant of the <see cref="T:ChatZ.Common.ClientMessage"/> instance
+            </summary>
+            <typeparam name="TResult">The type of data to be returned from any callback</typeparam>
+            <param name="here">The <see cref="T:System.Func`2"/> to be executed for a HERE message</param>
+            <param name="talk">The <see cref="T:System.Func`2"/> to be executed for a TALK request</param>
+            <param name="none">The <see cref="T:System.Func`1"/> to be executed for an invalid message</param>
+            <returns>The result of invoking this appropriate callback</returns>
+        </member>
+        <member name="M:ChatZ.Common.ClientMessage.Match(System.Action{ChatZ.Common.ClientMessage.Here},System.Action{ChatZ.Common.ClientMessage.Talk},System.Action)">
+            <summary>
+            Executes the appropriate callback based on the variant of the <see cref="T:ChatZ.Common.ClientMessage"/> instance
+            </summary>
+            <param name="here">The <see cref="T:System.Action`1"/> to be executed for a HERE message</param>
+            <param name="talk">The <see cref="T:System.Action`1"/> to be executed for a TALK request</param>
+            <param name="none">The <see cref="T:System.Action"/> to be executed for an invalid message</param>
+        </member>
+        <member name="T:ChatZ.Common.ClientMessage.None_">
+            <summary>
+            Indicates that a malformed (or otherwise invalid) message was received, or that no message has been received
+            </summary>
+        </member>
+        <member name="T:ChatZ.Common.ClientMessage.Here">
+            <summary>
+            Contains the details of a HERE message
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ClientMessage.Here.Sender">
+            <summary>
+            The handle (i.e. identity) of the sending client
+            </summary>
+        </member>
+        <member name="T:ChatZ.Common.ClientMessage.Talk">
+            <summary>
+            Contains the details of a TALK request
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ClientMessage.Talk.Target">
+            <summary>
+            The handle with which the message should be shared
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ClientMessage.Talk.Sender">
+            <summary>
+            The handle of the sending client
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ClientMessage.Talk.Detail">
+            <summary>
+            The actual content to be shared
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.ClientMessage.None">
+            <summary>
+            Indicates that a malformed (or otherwise invalid) message was received, or that no message has been received
+            </summary>
+        </member>
+        <member name="M:ChatZ.Common.ClientMessage.Decode(System.Byte[][])">
+            <summary>
+            Translates a binary ZMQ message into the appropriate sub-class of <see cref="T:ChatZ.Common.ClientMessage"/>
+            </summary>
+            <param name="message">A single ZMQ message consisting of 1 or more frames of 0 or more bytes</param>
+            <returns>An instance of a sub-class of <see cref="T:ChatZ.Common.ClientMessage"/></returns>
+        </member>
+        <member name="T:ChatZ.Common.Protocol">
+            <summary>
+            Provides common functionality for the CHAT protocol (framing, encoding, et cetera)
+            </summary>
+            <remarks>
+            This protocol connects many clients to a single server. Once connected, a client can broadcast public messages, 
+            which are seen by all other connected clients. Additionally, a client can send a private message exclusively to 
+            a single connected user. The server keeps track of connected clients and relays messages between clients. When
+            a client appears inactive for a certain period of time, the server "disconnects" that client. Thus, when idle 
+            (i.e. not sending a TALK message), a client should send HERE messages. Note that message flows between clients 
+            and server are fully asynchonous and may be unidirectional or bidirectional.
+            <code>
+            ; typical message exchanges between client (C) and server (S)
+            C:HERE (S:LIST) ; idle message
+            C:TALK          ; send message to individual or group
+            S:NEWS          ; broadcast message to group or individual
+            </code>
+            The framing of each message is given by the following ABNF grammar, where each ZMQ message frame is given a single line.
+            Please note: the routing envelop and delimiter of ROUTER/DEALER exchanges is omitted from this grammar.
+            <code>
+            HERE  = signature protocol version 0x01
+            
+            TALK  = signature protocol version 0x03
+                    json { "target" : &lt;handle&gt;, "details" : "string" }
+            
+            LIST  = signature protocol version 0x02
+                    json { "timestamp" : "2017-01-01T00:00:00.000Z", "handles" : [ &lt;handle&gt; ] }
+            
+            NEWS  = signature protocol version topic
+                    json { "timestamp" : "2017-01-01T00:00:00.000Z", "sender" : &lt;handle&gt;, "details" : "string" }
+            
+            signature = 0x4D 0x4F
+            protocol  = 0x43 0x48 0x41 0x54
+            version   = 0x01
+            
+            topic   = client / "$CHATZSRV"
+            client  = 3*UTF8  ; handle as given via socket identity
+            </code>
+            </remarks>
+        </member>
+        <member name="F:ChatZ.Common.Protocol.Version">
+            <summary>
+            Indicates the protocol version supported by this library
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.Protocol.GroupSender">
+            <summary>
+            A literal value used by TALK and NEWS messages to signal a public message
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.Protocol.GroupTopic">
+            <summary>
+            The binary prefix for public NEWS messages (can be used by subscribers)
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.Protocol.Preamble">
+            <summary>
+            A 7-byte prefix used to disambiguate this versio of this protocol from other messages
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.Protocol.HereFrame">
+            <summary>
+            The binary control frame for HERE messages
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.Protocol.ListFrame">
+            <summary>
+            The binary control frame for LIST messages
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.Protocol.TalkFrame">
+            <summary>
+            The binary control frame for TALK messages
+            </summary>
+        </member>
+        <member name="M:ChatZ.Common.Protocol.NewsFrame(System.String)">
+            <summary>
+            Constructs a new binary prefix for NEWS messages, composed of the <see cref="F:ChatZ.Common.Protocol.Preamble"/> and a given topic
+            <para> This function should only be used for private messages. 
+            Public broadcasts should make use of the <see cref="F:ChatZ.Common.Protocol.GroupTopic"/> frame.</para>
+            </summary>
+            <param name="topic">Message classifier used in subscription-based message routing</param>
+            <returns>A single ZMQ message frame</returns>
+        </member>
+        <member name="M:ChatZ.Common.Protocol.ListMessage(System.Byte[],System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Constructs a new binary LIST reply (used by a server when heartbeating)
+            </summary>
+            <param name="target">The identity of the client to which the message will be sent</param>
+            <param name="handles">The screen names of all currently connected clients</param>
+            <returns>A single ZMQ message consisting of four frames: routing envelop, delimiter, control frame, and payload</returns>
+        </member>
+        <member name="M:ChatZ.Common.Protocol.NewsMessage(System.String,System.String,System.String)">
+            <summary>
+            Constructs a new binary NEWS message
+            </summary>
+            <param name="sender">The screen name of the client sharing the messge</param>
+            <param name="details">The actual message content being shared</param>
+            <param name="topic">Should be <see cref="F:ChatZ.Common.Protocol.GroupSender"/> for public messages or a screen name for private messages</param>
+            <returns>A single ZMQ message consisting of two frames: routing prefix and payload</returns>
+        </member>
+        <member name="M:ChatZ.Common.Protocol.HereMessage">
+            <summary>
+            Constructs a new binary HERE request (used by a client when heartbeating)
+            </summary>
+            <returns>A single ZMQ message consisting of two frames: delimiter and control frame</returns>
+        </member>
+        <member name="M:ChatZ.Common.Protocol.TalkMessage(System.String,System.String)">
+            <summary>
+            Constructs a new binary TALK request
+            </summary>
+            <param name="details">The content to be shared</param>
+            <param name="target">
+            The screen name of the client to which the message should be sent (intended for private messages).
+            If omitted, message will be public (i.e. sent to all connected clients).
+            </param>
+            <returns>A single ZMQ message consisting of three frames: delimiter, control frame, and payload</returns>
+        </member>
+        <member name="T:ChatZ.Common.ServerMessage">
+            <summary>
+            Encodes all the possible variants of a reply a client might receiver from the server
+            <para>(Note: instances shoulde be created via the class-level <see cref="M:ChatZ.Common.ServerMessage.Decode(System.Byte[][])"/> method.)</para>
+            </summary>
+        </member>
+        <member name="M:ChatZ.Common.ServerMessage.Match``1(System.Func{ChatZ.Common.ServerMessage.List,``0},System.Func{ChatZ.Common.ServerMessage.News,``0},System.Func{``0})">
+            <summary>
+            Executes the appropriate callback based on the variant of the <see cref="T:ChatZ.Common.ServerMessage"/> instance
+            </summary>
+            <typeparam name="TResult">The type of data to be returned from any callback</typeparam>
+            <param name="list">The <see cref="T:System.Func`2"/> to be executed for a LIST reply</param>
+            <param name="news">The <see cref="T:System.Func`2"/> to be executed for a NEWS broadcast</param>
+            <param name="none">The <see cref="T:System.Func`1"/> to be executed for an invalid message</param>
+            <returns>The result of invoking this appropriate callback</returns>
+        </member>
+        <member name="M:ChatZ.Common.ServerMessage.Match(System.Action{ChatZ.Common.ServerMessage.List},System.Action{ChatZ.Common.ServerMessage.News},System.Action)">
+            <summary>
+            Executes the appropriate callback based on the variant of the <see cref="T:ChatZ.Common.ServerMessage"/> instance
+            </summary>
+            <param name="list">The <see cref="T:System.Action`1"/> to be executed for a LIST reply</param>
+            <param name="news">The <see cref="T:System.Action`1"/> to be executed for a NEWS broadcast</param>
+            <param name="none">The <see cref="T:System.Action"/> to be executed for an invalid message</param>
+        </member>
+        <member name="T:ChatZ.Common.ServerMessage.None_">
+            <summary>
+            Indicates that a malformed (or otherwise invalid) message was received, or that no message has been received
+            </summary>
+        </member>
+        <member name="T:ChatZ.Common.ServerMessage.List">
+            <summary>
+            Contains the details of a LIST reply
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ServerMessage.List.Stamp">
+            <summary>
+            The point-in-time, in UTC, when the server sent the message
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ServerMessage.List.Users">
+            <summary>
+            The handles of all the clients connected to the server (at time of message transmission)
+            </summary>
+        </member>
+        <member name="T:ChatZ.Common.ServerMessage.News">
+            <summary>
+            Contains the details of a NEWS broadcast
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ServerMessage.News.Topic">
+            <summary>
+            The intended recipient of the broadcast
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ServerMessage.News.Stamp">
+            <summary>
+            The point-in-time, in UTC, when the server sent the message
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ServerMessage.News.Sender">
+            <summary>
+            The client (or server) who originated the broadcast
+            </summary>
+        </member>
+        <member name="P:ChatZ.Common.ServerMessage.News.Detail">
+            <summary>
+            The actual content of the broadcast
+            </summary>
+        </member>
+        <member name="F:ChatZ.Common.ServerMessage.None">
+            <summary>
+            Indicates that a malformed (or otherwise invalid) message was received, or that no message has been received
+            </summary>
+        </member>
+        <member name="M:ChatZ.Common.ServerMessage.Decode(System.Byte[][])">
+            <summary>
+            Translates a binary ZMQ message into the appropriate sub-class of <see cref="T:ChatZ.Common.ServerMessage"/>
+            </summary>
+            <param name="message">A single ZMQ message consisting of 1 or more frames of 0 or more bytes</param>
+            <returns>An instance of a sub-class of <see cref="T:ChatZ.Common.ServerMessage"/></returns>
+        </member>
+    </members>
+</doc>
